@@ -1,0 +1,134 @@
+2nd_Floor_Router(config-if)#do show running-config
+Building configuration...
+
+Current configuration : 1880 bytes
+!
+version 15.1
+service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname 2nd_Floor_Router
+!
+!
+!
+enable secret 5 $1$mERr$2PyM1/kcJYhkEjTv7OHdu.
+!
+!
+!
+ip dhcp pool software_development
+ network 192.168.4.0 255.255.255.0
+ default-router 192.168.4.1
+ dns-server 8.8.8.8
+ip dhcp pool testing
+ network 192.168.5.0 255.255.255.0
+ default-router 192.168.5.1
+ dns-server 8.8.8.8
+ip dhcp pool R&D
+ network 192.168.6.0 255.255.255.0
+ default-router 192.168.6.1
+ dns-server 8.8.8.8
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+username router2 password 0 router2
+!
+!
+license udi pid CISCO2911/K9 sn FTX15242G91-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip ssh version 2
+ip domain-name floor2.ITcompany
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0.40
+ encapsulation dot1Q 40
+ ip address 192.168.4.1 255.255.255.0
+!
+interface GigabitEthernet0/0.50
+ encapsulation dot1Q 50
+ ip address 192.168.5.1 255.255.255.0
+!
+interface GigabitEthernet0/0.60
+ encapsulation dot1Q 60
+ ip address 192.168.6.1 255.255.255.0
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface GigabitEthernet0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/0/0
+ ip address 10.1.1.2 255.255.255.252
+!
+interface Serial0/0/1
+ ip address 10.1.1.5 255.255.255.252
+ clock rate 64000
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ log-adjacency-changes
+ network 10.1.1.0 0.0.0.3 area 0
+ network 10.1.1.4 0.0.0.3 area 0
+ network 192.168.4.0 0.0.0.255 area 0
+ network 192.168.5.0 0.0.0.255 area 0
+ network 192.168.6.0 0.0.0.255 area 0
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+logging 192.168.7.8
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ exec-timeout 0 20
+ logging synchronous
+ login local
+ transport input ssh
+!
+!
+!
+end

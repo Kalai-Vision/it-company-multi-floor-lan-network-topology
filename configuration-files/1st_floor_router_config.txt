@@ -1,0 +1,134 @@
+1st_Floor_Router#show running-config
+Building configuration...
+
+Current configuration : 1872 bytes
+!
+version 15.1
+service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname 1st_Floor_Router
+!
+!
+!
+enable secret 5 $1$mERr$KHmkn3KKkZnGVNNbIa2LN0
+!
+!
+!
+ip dhcp pool Front_office
+ network 192.168.1.0 255.255.255.0
+ default-router 192.168.1.1
+ dns-server 8.8.8.8
+ip dhcp pool HR
+ network 192.168.2.0 255.255.255.0
+ default-router 192.168.2.1
+ dns-server 8.8.8.8
+ip dhcp pool Finance
+ network 192.168.3.0 255.255.255.0
+ default-router 192.168.3.1
+ dns-server 8.8.8.8
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+username router1 password 0 router1
+!
+!
+license udi pid CISCO2911/K9 sn FTX1524AL02-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip ssh version 2
+ip domain-name floor1.ITcompany
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.1.1 255.255.255.0
+!
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.2.1 255.255.255.0
+!
+interface GigabitEthernet0/0.30
+ encapsulation dot1Q 30
+ ip address 192.168.3.1 255.255.255.0
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface GigabitEthernet0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/1/0
+ ip address 10.1.1.1 255.255.255.252
+ clock rate 64000
+!
+interface Serial0/1/1
+ ip address 10.1.1.10 255.255.255.252
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ log-adjacency-changes
+ network 10.1.1.0 0.0.0.3 area 0
+ network 10.1.1.8 0.0.0.3 area 0
+ network 192.168.1.0 0.0.0.255 area 0
+ network 192.168.2.0 0.0.0.255 area 0
+ network 192.168.3.0 0.0.0.255 area 0
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+logging 192.168.7.8
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ exec-timeout 0 20
+ logging synchronous
+ login local
+ transport input ssh
+!
+!
+!
+end
